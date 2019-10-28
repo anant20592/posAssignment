@@ -1,0 +1,100 @@
+<table class="scroll">
+  <thead>
+    <tr>
+      <th>PRODUCTS</th>
+      <th>PRICE</th>
+      <th>QUANTITY</th>
+      <th>TOTAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <th *ngIf="showEmptyList">
+      <h1>THERE ARE NO PRODUCTS</h1>
+    </th>
+    <tr *ngFor="let product of productDetails; let i = index">
+      <td><span class="md" (click)="removeFromCart(i)">x</span>{{product.name}}</td>
+      <td>{{product.price}}</td>
+      <td>
+        <input type='button' value='-' class='qtyminus' field='quantity' (click)="decrementQuantity(product)" />
+        <input type='text' name='quantity' value={{product.quantity}} class='qty' #quantity />
+        <input type='button' value='+' class='qtyplus' field='quantity' (click)="incrementQuantity(product)" />
+      </td>
+      <td>{{product.total}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<table style="width:100%">
+  <tr>
+    <th colspan="1">Sub Total</th>
+    <td colspan="2">{{subTotal}}INR &nbsp; {{totalItems}} Items
+    </td>
+  </tr>
+  <tr>
+    <th colspan="1">VAT Tax</th>
+    <td colspan="2"><input type="number" min="0" max="100" [(ngModel)]="vatInput" name='vatInput' (change)="calculateNetTotal()"/>%
+    <td>
+  </tr>
+  <tr>
+    <th colspan="1">Discount
+    <th>
+    <td colspan="1"><input type="number" min="0" max="100" [(ngModel)]="discount" name='discount' (change)="calculateNetTotal()"/>%</td>
+  </tr>
+  <tr>
+    <th colspan="2">Total</th>
+    <td colspan="1">{{netTotal}}</td>
+  </tr>
+</table>
+<div class="row">
+  <div class="col-6">
+    <button type="button" class="cancelButton" (click)="reset()">CANCEL SALE</button>
+  </div>
+  <div class="col-6">
+    <button class="saveButton modal_opener" (click)="toggleModal()">PROCESS SALE</button>
+  </div>
+</div>
+<app-receipt [show]="showModal" [customClass]="'custom_modal_class'" [closeCallback]="toggleModal" >
+  <h2>Sale No: 00102</h2>
+  Date {{now | date:'dd-MM-yyyy HH:mm:ss'}}
+  <table style="width:100%">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Products</th>
+        <th>Quantity</th>
+        <th>SubTotal</th>
+      </tr>
+    </thead>
+    <hr style="width:100%">
+    <tbody>
+      <tr *ngFor="let product of productDetails;let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{product.name}}</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.total}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table style="width:100%">
+    <tr>
+      <td colspan="1">Total Items</td>
+      <td colspan="1">{{totalItems}}</td>
+      <td colspan="2">Total</td>
+      <td colspan="2">{{netTotal}}</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td colspan="2">Discount</td>
+      <td colspan="2">{{discount}}</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td colspan="2">VAT</td>
+      <td colspan="2">{{vatInput}}</td>
+    </tr>
+
+  </table>
+  <button title="Close" #btnClose class="close_modal saveButton" data-dismiss="modal" (click)="reset()">
+    Close
+  </button>
+</app-receipt>

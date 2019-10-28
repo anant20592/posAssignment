@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-3">
+    <app-pricing></app-pricing>
+  </div>
+  <div class="col-9" style="margin-left: 1%;">
+    <div class="col-12-5 container" *ngFor="let product of products">
+      <div [ngStyle]="{background: 'url(assets/' + product.image + ')'}" class="image">
+        <span class="spanDetail">{{product.name | uppercase}}
+        </span>
+      </div>
+      <div class="middle"  (click)="addToList(product)">
+        <div class="text">{{product.price}}<br/>{{product.description}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+    
